@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CourseRenderPane from "./CourseRenderPane";
+import querystring from 'querystring';
 
 
 class CoursePane extends Component {
@@ -34,12 +35,10 @@ class CoursePane extends Component {
 
         if (prevProps !== this.props) {
             this.setState({loading: 1});
-            const url = new URL("https://websocserver.herokuapp.com/");
-
             const params = {department: dept, term: term, GE: ge};
-            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+            const url = "/api/websoc/?" + querystring.stringify(params);
 
-            fetch(url.toString()).then((resp) => {
+            fetch(url).then((resp) => {
                     return resp.json();
                 }
             ).then((jsonObj) => this.setState({courseData: CoursePane.flatten(jsonObj), loading: 2}));
