@@ -3,6 +3,7 @@ import {IconButton, Typography} from "@material-ui/core";
 import {ArrowBack} from '@material-ui/icons';
 import SectionTable from "./SectionTable";
 import './sectiontable.css'
+import AlmanacGraphWrapped from "../AlmanacGraph/AlmanacGraph";
 
 class CourseDetailPane extends Component {
     render() {
