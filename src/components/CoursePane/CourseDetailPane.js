@@ -21,7 +21,10 @@ class CourseDetailPane extends Component {
                     <Typography variant='title' style={{flexGrow: '1', marginTop: 12}}>
                         {this.props.courseDetails.name[0] + ' ' + this.props.courseDetails.name[1]}
                     </Typography>
-                </div>
+                </div> 
+                
+                <AlmanacGraphWrapped term = {this.props.term} courseDetails={this.props.courseDetails}/>
+                
                 <SectionTable style={{marginTop: 12}}
                               courseDetails={this.props.courseDetails}
                               onAddClass={this.props.onAddClass}/>
