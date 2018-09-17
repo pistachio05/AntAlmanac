@@ -27,7 +27,7 @@ td {
 }
 
 tr > td:first-child {
-    padding: 0 5px 0 0;
+    padding: 0 8px 0 0;
     vertical-align: middle;
 }
 

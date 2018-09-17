@@ -18,5 +18,4 @@ app.get('*', (req, res) => {
     res.send('Resource does not exist. Check URL.');
 });
 
-const port = 3001;
-app.listen(port);
+app.listen(process.env.PORT || 3001);

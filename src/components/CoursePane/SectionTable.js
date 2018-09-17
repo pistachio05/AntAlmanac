@@ -20,12 +20,10 @@ class ScheduleAddSelector extends Component {
     render() {
         return (
             <Fragment>
-                <IconButton
+                <AddCircle
                     color='primary'
                     onClick={this.handleClick}
-                >
-                    <AddCircle/>
-                </IconButton>
+                    style={{cursor: 'pointer'}}/>
                 <Menu
                     anchorEl={this.state.anchor}
                     open={Boolean(this.state.anchor)}
@@ -57,11 +55,9 @@ class SectionTable extends Component {
                     <th className='no_border'>{}</th>
                     <th>Code</th>
                     <th>Type</th>
-                    <th>Sec</th>
-                    <th>Units</th>
                     <th>Instructors</th>
-                    <th>Time</th>
-                    <th>Place</th>
+                    <th>Times</th>
+                    <th>Places</th>
                     <th>Enrollment</th>
                     <th>Restrictions</th>
                     <th>Status</th>
@@ -77,15 +73,18 @@ class SectionTable extends Component {
                                                      courseDetails={this.props.courseDetails}/>
                             </td>
                             <td>{section.classCode}</td>
-                            <td>{section.classType}</td>
-                            <td>{section.sectionCode}</td>
-                            <td>{section.units}</td>
+                            <td className='multiline'>
+                                {
+                                    `${section.classType}
+Section: ${section.sectionCode}
+Units: ${section.units}`
+                                }</td>
                             <td className='multiline'>{section.instructors.join('\n')}</td>
                             <td className='multiline'>{section.meetings.map(meeting => meeting[0]).join('\n')}</td>
                             <td className='multiline'>{section.meetings.map(meeting => meeting[1]).join('\n')}</td>
                             <td className='multiline'>
-                                {
-                                    `${section.numCurrentlyEnrolled[0]} / ${section.maxCapacity}
+                                <strong>{`${section.numCurrentlyEnrolled[0]} / ${section.maxCapacity}`}</strong>
+                                {`
 WL: ${section.numOnWaitlist}
 NOR: ${section.numNewOnlyReserved}`
                                 }

@@ -88,7 +88,7 @@ class App extends Component {
         const randomColor = this.state[arrayOfColorsName][this.state[arrayOfColorsName].length - 1];
 
         const checkExist = this.state['schedule' + scheduleNumber + 'Events'].find((element) =>
-            element.title === section.classCode + " " + name[0]
+            element.title === name[0] + ' ' + name[1]
         );
 
         if (!checkExist) {
@@ -119,7 +119,7 @@ class App extends Component {
                         if (shouldBeInCal) {
                             const newClass = {
                                 color: randomColor,
-                                title: section.classCode + " " + name[0],
+                                title: name[0] + ' ' + name[1],
                                 location: meeting[1],
                                 type: section.classType,
                                 start: new Date(2018, 0, index + 1, start, startMin),
