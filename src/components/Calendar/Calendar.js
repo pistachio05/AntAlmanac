@@ -69,7 +69,7 @@ class Calendar extends Component {
                         events={this.props.classEventsInCalendar}
                         eventPropGetter={Calendar.eventStyleGetter}
                         components={{event: CustomEvent}}
-                        onSelectEvent={event => this.props.onClassDelete(event.title)}
+                        onSelectEvent={event => this.props.onClassDelete(event.classCode)}
                     />
                 </Paper>
             </div>

@@ -60,16 +60,16 @@ class App extends Component {
         this.handleAddCustomEvent = this.handleAddCustomEvent.bind(this);
     }
 
-    handleClassDelete(title) {
+    handleClassDelete(classCode) {
         let colorFound = false;
 
         const classEventsInCalendar = this.state['schedule' + this.state.currentScheduleIndex + 'Events'].filter(
             event => {
-                if (!colorFound && event.title === title && event.color !== undefined) {
+                if (!colorFound && event.classCode === classCode && event.color !== undefined) {
                     this.setState({['arrayOfColors' + this.state.currentScheduleIndex]: this.state['arrayOfColors' + this.state.currentScheduleIndex].concat(event.color)});
                     colorFound = true;
                 }
-                return event.title !== title;
+                return event.classCode !== classCode;
             }
         );
         this.setState({['schedule' + this.state.currentScheduleIndex + 'Events']: classEventsInCalendar});
@@ -88,7 +88,7 @@ class App extends Component {
         const randomColor = this.state[arrayOfColorsName][this.state[arrayOfColorsName].length - 1];
 
         const checkExist = this.state['schedule' + scheduleNumber + 'Events'].find((element) =>
-            element.title === name[0] + ' ' + name[1]
+            element.classCode === section.classCode
         );
 
         if (!checkExist) {
@@ -121,6 +121,7 @@ class App extends Component {
                                 color: randomColor,
                                 title: name[0] + ' ' + name[1],
                                 location: meeting[1],
+                                classCode: section.classCode,
                                 type: section.classType,
                                 start: new Date(2018, 0, index + 1, start, startMin),
                                 end: new Date(2018, 0, index + 1, end, endMin)
