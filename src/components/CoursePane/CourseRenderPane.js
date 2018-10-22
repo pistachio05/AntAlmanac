@@ -1,10 +1,9 @@
 import {withStyles} from '@material-ui/core/styles';
-import {Paper, Button, Typography, Grid, Modal, Tooltip} from "@material-ui/core";
+import {Paper, Typography, Grid, Modal} from "@material-ui/core";
 import {ViewList} from "@material-ui/icons";
 import React, {Component} from 'react';
 import CourseDetailPane from "./CourseDetailPane";
 import SchoolDeptCard from "./SchoolDeptCard";
-import CourseInfo from "./CourseInfo";
 
 const styles = theme => ({
     course: {
@@ -43,25 +42,23 @@ class CourseRenderPane extends Component {
     }
 
     getGrid(SOCObject) {
+        console.log(SOCObject);
         if ('departments' in SOCObject) {
             return (
                 <SchoolDeptCard comment={SOCObject.comment} type={'school'} name={SOCObject.name}/>
             )
         } else if ('courses' in SOCObject) {
             return (
-                <SchoolDeptCard name={'Department of ' + SOCObject.name[1]} comment={SOCObject.comments.join('\n')} type={'dept'}/>
+                <SchoolDeptCard name={'Department of ' + SOCObject.name[1]} comment={SOCObject.comments.join('\n')}
+                                type={'dept'}/>
             )
         } else {
             return (
                 <Grid item md={6} xs={12}>
                     <Paper elevation={3} className={this.props.classes.course} square>
-
-                      <Tooltip title={'Grammar, sentence structure, paragraph and essay organization of formal written English. Prerequisite: Placement into AC ENG 20A. Grading Option: Pass/no pass only.'}>
                         <Typography variant='button' className={this.props.classes.text}>
                             {SOCObject.name[0] + ' ' + SOCObject.name[1] + ' | ' + SOCObject.name[2]}
                         </Typography>
-                      </Tooltip>
-
                         <ViewList className={this.props.classes.icon}
                                   onClick={() => this.setState({courseDetailsOpen: true, course: SOCObject})}/>
                     </Paper>
@@ -94,9 +91,15 @@ class CourseRenderPane extends Component {
                     </CourseDetailPane>
                 </Modal>
 
-                <Grid container spacing={16}>
-                    {this.props.courseData.map((item) => this.getGrid(item))}
-                </Grid>
+                {this.props.courseData.length === 0 ?
+                    <div style={{height: '100%', width: '100%', display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'}}>
+                        Sorry, that search returned no courses. Please try again.
+                    </div>:
+                    <Grid container spacing={16}>
+                        {this.props.courseData.map((item) => this.getGrid(item))}
+                    </Grid>}
             </div>
         )
     }
