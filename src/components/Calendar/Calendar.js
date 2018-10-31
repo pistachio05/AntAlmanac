@@ -3,8 +3,8 @@ import BigCalendar from 'react-big-calendar'
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "../../../node_modules/@material-ui/core/IconButton/IconButton";
-import {ChevronLeft, ChevronRight, Add} from "@material-ui/icons";
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import {ChevronLeft, ChevronRight} from "@material-ui/icons";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Popup from "../CustomEvents/Popup";

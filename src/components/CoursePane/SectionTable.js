@@ -1,6 +1,18 @@
 import React, {Component, Fragment} from 'react';
+import {withStyles} from '@material-ui/core/styles';
 import AddCircle from '@material-ui/icons/AddCircle'
-import {IconButton, Menu, MenuItem} from "@material-ui/core";
+import {Menu, MenuItem} from "@material-ui/core";
+
+const styles = theme => ({
+    addButtonColumn: {
+        padding: '0 8px 0 0',
+        verticalAlign: 'middle',
+        border: 'none'
+    },
+    noBorder: {
+        border: 'none'
+    }
+});
 
 class ScheduleAddSelector extends Component {
     constructor(props) {
@@ -52,7 +64,7 @@ class SectionTable extends Component {
             <table>
                 <thead>
                 <tr>
-                    <th className='no_border'>{}</th>
+                    <th className={this.props.classes.addButtonColumn} >{}</th>
                     <th>Code</th>
                     <th>Type</th>
                     <th>Instructors</th>
@@ -67,7 +79,7 @@ class SectionTable extends Component {
                 {sectionInfo.map((section) => {
                     return (
                         <tr>
-                            <td className='no_border'>
+                            <td className={this.props.classes.addButtonColumn}>
                                 <ScheduleAddSelector onAddClass={this.props.onAddClass}
                                                      section={section}
                                                      courseDetails={this.props.courseDetails}/>
@@ -101,4 +113,4 @@ NOR: ${section.numNewOnlyReserved}`
 }
 
 //TODO: Convert CSS Sheet to JSS
-export default SectionTable;
+export default withStyles(styles)(SectionTable);

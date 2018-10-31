@@ -1,18 +1,9 @@
-import React, {Component} from 'react';
-import {Fragment} from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography'
-import AppBar from '@material-ui/core/AppBar';
+import React, {Component, Fragment} from 'react';
+import {Grid, Toolbar, Typography, AppBar, Paper, Button, CssBaseline, IconButton} from '@material-ui/core';
 import SearchForm from "../SearchForm/SearchForm";
 import CoursePane from "../CoursePane/CoursePane";
 import Calendar from "../Calendar/Calendar";
-import Paper from "@material-ui/core/Paper";
-import AlmanacGraphWrapped from "../AlmanacGraph/AlmanacGraph";
-import LoginBtn from "../LogInButton/LButton";
-import Popup from "../CustomEvents/Popup";
-import Button from "@material-ui/core/Button";
+import {Dns, ListAlt} from "@material-ui/icons";
 import {
     red,
     pink,
@@ -50,7 +41,8 @@ class App extends Component {
             arrayOfColors0: arrayOfColors.slice(0),
             arrayOfColors1: arrayOfColors.slice(0),
             arrayOfColors2: arrayOfColors.slice(0),
-            arrayOfColors3: arrayOfColors.slice(0)
+            arrayOfColors3: arrayOfColors.slice(0),
+            view: 1
         };
 
         this.updateFormData = this.updateFormData.bind(this);
@@ -58,6 +50,7 @@ class App extends Component {
         this.handleClassDelete = this.handleClassDelete.bind(this);
         this.handleScheduleChange = this.handleScheduleChange.bind(this);
         this.handleAddCustomEvent = this.handleAddCustomEvent.bind(this);
+        this.setView = this.setView.bind(this);
     }
 
     handleClassDelete(classCode) {
@@ -164,6 +157,10 @@ class App extends Component {
         }
     };
 
+    setView(viewNum) {
+        this.setState({view: viewNum});
+    }
+
     render() {
         return (
             <Fragment>
@@ -192,18 +189,27 @@ class App extends Component {
                     </Grid>
 
                     <Grid item lg={6} xs={12}>
-                        <Paper
-                            style={{height: '85vh', overflow: 'auto', margin: '10px 10px 0px 5px', padding: 10}}>
+                        <Paper style={{overflow: 'hidden', margin: '10px 10px 0px 5px'}}>
+                            <Toolbar variant='dense' style={{backgroundColor: '#5191d6'}}>
+                                <IconButton onClick={() => this.setView(0)}><ListAlt/></IconButton>
+                                <IconButton onClick={() => this.setView(1)}><Dns/></IconButton>
+                            </Toolbar>
+                        </Paper>
+
+                        <Paper style={{height: '80vh', overflow: 'auto', margin: '10px 10px 0px 5px', padding: 10}}>
                             <CoursePane
+                                view={this.state.view}
                                 formData={this.state.formData}
-                                onAddClass={this.handleAddClass}
-                            />
+                                onAddClass={this.handleAddClass}/>
+                            <Paper/>
                         </Paper>
                     </Grid>
                 </Grid>
             </Fragment>
         );
     }
+
+
 }
 
 export default App;

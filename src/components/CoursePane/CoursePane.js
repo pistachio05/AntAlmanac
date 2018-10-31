@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import CircularProgress from "@material-ui/core/CircularProgress";
+import {CircularProgress} from "@material-ui/core";
 import CourseRenderPane from "./CourseRenderPane";
 import querystring from 'querystring';
 
@@ -11,7 +11,7 @@ class CoursePane extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return this.state !== nextState || nextProps.formData !== this.props.formData;
+        return this.state !== nextState || nextProps.formData !== this.props.formData || nextProps.view !== this.props.view;
     }
 
     static flatten(data) {
@@ -33,7 +33,7 @@ class CoursePane extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {dept, term, ge} = this.props.formData;
 
-        if (prevProps !== this.props) {
+        if (prevProps.formData !== this.props.formData) {
             this.setState({loading: 1});
             const params = {department: dept, term: term, GE: ge};
             const url = "/api/websoc/?" + querystring.stringify(params);
@@ -50,17 +50,19 @@ class CoursePane extends Component {
 
         if (loading === 2) {
             return <CourseRenderPane onAddClass={this.props.onAddClass}
-                                     courseData={courseData}
-            />
+                                  courseData={courseData}
+                                  view={this.props.view}/>
+
         } else if (loading === 1) {
             return (
-                <div style={{height: '100%', width: '100%', display: 'flex',
+                <div style={{
+                    height: '100%', width: '100%', display: 'flex',
                     justifyContent: 'center',
-                    alignItems: 'center'}}>
+                    alignItems: 'center'
+                }}>
                     <CircularProgress size={50}/>
                 </div>
             )
-
         } else {
             return <Fragment/>
         }
