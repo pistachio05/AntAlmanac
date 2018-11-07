@@ -4,7 +4,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "../../../node_modules/@material-ui/core/IconButton/IconButton";
-import { ChevronLeft, ChevronRight, Add } from "@material-ui/icons";
+import { ChevronLeft, ChevronRight, Add, OpenInBrowser} from "@material-ui/icons";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import DialogSelect from "../CustomEvents/Popup";
@@ -25,6 +25,17 @@ const CustomEvent = ({ event }) => (
 );
 
 class Calendar extends Component {
+  constructor(props) {
+      super(props);
+      temp = "https://www.reg.uci.edu/perl/WebSoc?YearTerm=2019-03&ShowFinals=1&ShowComments=1&CourseCodes=";
+      for(var i = 0; i < this.props.classEventsInCalendar.length; i++){
+        temp += "%2C";
+        temp += this.props.classEventsInCalendar[i][courseID];
+      }
+      this.state = {url: temp};
+      this.handleStateChange = this.handleStateChange.bind(this);
+  }
+
   static eventStyleGetter(event, start, end, isSelected) {
     return {
       style: {
@@ -50,7 +61,7 @@ class Calendar extends Component {
         <Paper style={{ overflow: "allow", marginBottom: 5 }}>
           <Toolbar variant="dense" style={{ backgroundColor: "#5191d6" }}>
             <IconButton onClick={() => this.props.onScheduleChange(0)}>
-              
+
             <Tooltip title="Pervious Schedule">
               <ChevronLeft />
               </Tooltip >
@@ -58,6 +69,7 @@ class Calendar extends Component {
 
             <IconButton onClick={() => this.props.onScheduleChange(1)}>
             <Tooltip title="Next Schedule">
+            <a href =
               <ChevronRight />
               </Tooltip>
 
@@ -67,16 +79,24 @@ class Calendar extends Component {
               {"Schedule " + (this.props.currentScheduleIndex + 1)}
             </Typography>
 
-             
+
             <DomPic />
-          
+
             <domModel />
-            
+
+
+            <Tooltip title="Expand WebSOC Info">
+              <a href = {this.state.url}>
+                <OpenInBrowser />
+              </a>
+            </Tooltip>
+
+
             <DialogSelect
               onAddCustomEvent={this.props.onAddCustomEvent}
               setID={this.props.setID}
             />
-            
+
           </Toolbar>
         </Paper>
 
