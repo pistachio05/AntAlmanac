@@ -3,7 +3,7 @@ A tool that provides UCI anteaters with historical course information in a visua
 
 Currently deployed at: https://antalmanac.com/
 
-Find out more about our project at: https://almanac-team.herokuapp.com/index.html
+Find out more about our project at: https://the-antalmanac.herokuapp.com/index.html
 
 ## To start development:
 #### 1. Install npm and node js, then run `npm install`
