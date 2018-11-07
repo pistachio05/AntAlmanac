@@ -85,11 +85,9 @@ class Calendar extends Component {
             <domModel />
 
 
-            <Tooltip title="Expand WebSOC Info">
-              <a href = {this.state.url}>
-                <OpenInBrowser />
-              </a>
-            </Tooltip>
+            <a href = {this.state.url}>
+              <OpenInBrowser />
+            </a>
 
 
             <DialogSelect
