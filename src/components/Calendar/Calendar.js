@@ -9,9 +9,11 @@ import {
   ChevronRight,
   Add,
   Undo,
-  OpenInBrowser
+  OpenInBrowser,
+  Delete
 } from "@material-ui/icons";
 import Typography from "@material-ui/core/Typography";
+import "./calendar.css"
 import Paper from "@material-ui/core/Paper";
 import DialogSelect from "../CustomEvents/Popup";
 import DomPic from "../AlmanacGraph/DomPic";
@@ -75,7 +77,7 @@ class Calendar extends Component {
   render() {
     return (
       <div>
-        <Paper style={{ overflow: "allow", marginBottom: 5 }}>
+        <Paper style={{ overflow: "auto", marginBottom: 5 }}>
           <Toolbar variant="dense" style={{ backgroundColor: "#5191d6" }}>
             <IconButton onClick={() => this.props.onScheduleChange(0)}>
               <ChevronLeft />
@@ -84,22 +86,26 @@ class Calendar extends Component {
               <ChevronRight />
             </IconButton>
             <Typography variant="subheading" style={{ flexGrow: 1 }}>
-              {"Schedule " + (this.props.currentScheduleIndex + 1)}
+              {this.props.currentScheduleIndex + 1}
             </Typography>
             <IconButton onClick={this.props.clickToUndo}>
               <Undo />
             </IconButton>
+
             <DomPic />
             <domModel />
             <IconButton
               onClick={() => this.moreInfoURL(this.props.coursesEvents)}
             >
-              <Undo />
+              <OpenInBrowser />
             </IconButton>
             <DialogSelect
               onAddCustomEvent={this.props.onAddCustomEvent}
               setID={this.props.setID}
             />
+            <IconButton onClick={this.props.clear}>
+              <Delete />
+            </IconButton>
           </Toolbar>
         </Paper>
 
@@ -119,6 +125,8 @@ class Calendar extends Component {
               step={15}
               timeslots={2}
               defaultDate={new Date(2018, 0, 1)}
+              scrollToTime={new Date(2018, 0, 1, 11)}
+              showMultiDayTimes={true}
               min={new Date(2018, 0, 1, 7)}
               max={new Date(2018, 0, 1, 23)}
               events={this.props.classEventsInCalendar}
