@@ -1,22 +1,22 @@
 import React, { Component } from "react";
 import { Fragment } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Grid from "@material-ui/core/Grid";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import AppBar from "@material-ui/core/AppBar";
+import {
+  Grid,
+  Toolbar,
+  Typography,
+  AppBar,
+  Paper,
+  Button,
+  Tooltip
+} from "@material-ui/core";
 import SearchForm from "../SearchForm/SearchForm";
 import CoursePane from "../CoursePane/CoursePane";
 import Calendar from "../Calendar/Calendar";
-import Paper from "@material-ui/core/Paper";
-
-import Button from "@material-ui/core/Button";
-import DomPic from "../AlmanacGraph/DomPic";
-import domModel from "../AlmanacGraph/domModel";
-import logo from "./logo_wide.png";
+import { ListAlt, Dns } from "@material-ui/icons";
 import Info from "@material-ui/icons/InfoSharp";
-import Tooltip from "@material-ui/core/Tooltip";
-
+import logo from "./logo.png";
+import ShowE from "../showEvents/showE";
 // pop up for log in
 import LogApp from "../logIn/popUp";
 import LoadUser from "../cacheMes/cacheM";
@@ -30,13 +30,17 @@ import {
   getColor,
   getCoursesData
 } from "./FetchHelper";
+import IconButton from "@material-ui/core/IconButton/IconButton";
 
 class App extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       Uclick: false,
+      name: undefined,
       formData: null,
+      prevFormData: null,
       schedule0Events: [],
       schedule1Events: [],
       schedule2Events: [],
@@ -45,16 +49,25 @@ class App extends Component {
       coursesEvents: [],
       customEvents: [],
       backupArray: [],
-      cusID: 0
+      cusID: 0,
+      enter: false,
+      view: 1,
+      showMore: false
     };
   }
 
-  componentDidMount = async () => {
-    document.addEventListener("keydown", this.undoEvent, false);
-  };
-  componentWillUnmount() {
+  componentDidMount() {
     document.addEventListener("keydown", this.undoEvent, false);
   }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.undoEvent, false);
+  }
+
+  setView = viewNum => {
+    if (this.state.formData != null) this.setState({ view: viewNum });
+  };
+
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   convertToDateObject = schedule => {
@@ -346,7 +359,9 @@ class App extends Component {
   };
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   updateFormData = formData => {
-    this.setState({ formData: formData });
+    this.setState({ showMore: false }, function() {
+      this.setState({ formData: formData, prevFormData: formData });
+    });
   };
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   handleAddCustomEvent = (events, calendarIndex, dates) => {
@@ -424,19 +439,33 @@ class App extends Component {
     }
   };
 
+  moreInfoF = () => {
+    console.log("okkkkkkk");
+    this.setState({ showMore: !this.state.showMore }, function() {
+      if (this.state.showMore == true) this.setState({ formData: null });
+      else this.setState({ formData: this.state.prevFormData });
+    });
+  };
+
   render() {
     return (
       <Fragment>
         <CssBaseline />
-        <AppBar position="static">
+        <AppBar position="static" style={{ marginBottom: 8 }}>
           <Toolbar variant="dense">
+            <img
+              src={logo}
+              ariaLabel="logo"
+              style={{ height: 40, width: 161 }}
+              className="App-logo"
+              alt="logo"
+            />
             <Typography
               variant="title"
               id="introID"
               color="inherit"
               style={{ flexGrow: 2 }}
             />
-
             <LoadUser load={this.handleLoad} save={this.handleSave} />
 
             {/* <LogApp act={this.handleChange} load={this.handleLoad} />
@@ -456,9 +485,7 @@ class App extends Component {
         </AppBar>
 
         <Grid container>
-          <Grid item lg={12}>
-            <SearchForm updateFormData={this.updateFormData} />
-          </Grid>
+          <SearchForm updateFormData={this.updateFormData} />
           <Grid item lg={6} xs={12}>
             <div style={{ margin: "10px 5px 0px 10px" }}>
               <Calendar
@@ -467,7 +494,7 @@ class App extends Component {
                     "schedule" + this.state.currentScheduleIndex + "Events"
                   ]
                 }
-                coursesEvents={this.state.coursesEvents}
+                moreInfoF={this.moreInfoF}
                 clickToUndo={this.clickToUndo}
                 currentScheduleIndex={this.state.currentScheduleIndex}
                 onClassDelete={this.handleClassDelete}
@@ -480,19 +507,34 @@ class App extends Component {
           </Grid>
 
           <Grid item lg={6} xs={12}>
+            <Paper style={{ overflow: "hidden", margin: "10px 10px 0px 5px" }}>
+              <Toolbar variant="dense" style={{ backgroundColor: "#5191d6" }}>
+                <IconButton onClick={() => this.setView(0)}>
+                  <ListAlt />
+                </IconButton>
+                <IconButton onClick={() => this.setView(1)}>
+                  <Dns />
+                </IconButton>
+              </Toolbar>
+            </Paper>
             <Paper
               style={{
-                height: "85vh",
+                height: "80vh",
                 overflow: "auto",
                 margin: "10px 10px 0px 5px",
                 padding: 10
               }}
             >
-              <CoursePane
-                formData={this.state.formData}
-                onAddClass={this.handleAddClass}
-                term={this.state.formData}
-              />
+              {this.state.showMore ? (
+                <ShowE events={this.state.coursesEvents} />
+              ) : (
+                <CoursePane
+                  view={this.state.view}
+                  formData={this.state.formData}
+                  onAddClass={this.handleAddClass}
+                  term={this.state.formData}
+                />
+              )}
             </Paper>
           </Grid>
         </Grid>
