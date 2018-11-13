@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import BigCalendar from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
-import Toolbar from "@material-ui/core/Toolbar";
+import { Toolbar, Typography, Paper, Tooltip } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import {
   ChevronLeft,
@@ -12,9 +12,7 @@ import {
   OpenInBrowser,
   Delete
 } from "@material-ui/icons";
-import Typography from "@material-ui/core/Typography";
 import "./calendar.css";
-import Paper from "@material-ui/core/Paper";
 import DialogSelect from "../CustomEvents/Popup";
 import DomPic from "./DomPic";
 
@@ -26,9 +24,8 @@ const CustomEvent = ({ event }) => {
       <div>
         <div style={{ marginTop: 4, marginBottom: 4, overflow: "hidden" }}>
           <div style={{ fontWeight: 500, float: "left" }}>{event.title}</div>
-          <div style={{ float: "right" }}>{event.type}</div>
         </div>
-        <div style={{ clear: "left" }}>{event.location}</div>
+        <div>{event.type + " " + event.location}</div>
       </div>
     );
   else {
@@ -62,46 +59,17 @@ class Calendar extends Component {
     );
   }
   //sorry boss
-  //   moreInfoURL = events => {
-  //     let url =
-  //       "https://www.reg.uci.edu/perl/WebSoc?YearTerm=2019-03&ShowFinals=1&ShowComments=1&CourseCodes=";
-  //     for (let event of events) {
-  //       url += event.courseID;
-  //       url += "%2C";
-  //     }
-  //     window.open(url);
-  //   };
+  // moreInfoURL = events => {
+  //   let url =
+  //     "https://www.reg.uci.edu/perl/WebSoc?YearTerm=2019-03&ShowFinals=1&ShowComments=1&CourseCodes=";
+  //   for (let event of events) {
+  //     url += event.courseID;
+  //     url += "%2C";
+  //   }
+  //   window.open(url);
+  // };
 
   render() {
-    // return (
-    //     <Fragment>
-    //         <Paper style={{overflow: 'auto', marginBottom: 8}}>
-    //             <Toolbar variant="dense" style={{backgroundColor: "#5191d6"}}>
-    //                 <IconButton onClick={() => this.props.onScheduleChange(0)}>
-    //                     <ChevronLeft/>
-    //                 </IconButton>
-    //                 <IconButton onClick={() => this.props.onScheduleChange(1)}>
-    //                     <ChevronRight/>
-    //                 </IconButton>
-    //                 <Typography variant="subheading" style={{flexGrow: 1}}>
-    //                     {"Schedule " + (this.props.currentScheduleIndex + 1)}
-    //                 </Typography>
-    //                 <IconButton onClick={this.props.clickToUndo}>
-    //                     <Undo/>
-    //                 </IconButton>
-    //                 <DomPic/>
-    //                 <IconButton
-    //                     onClick={() => this.moreInfoURL(this.props.coursesEvents)}
-    //                 >
-    //                     <OpenInBrowser/>
-    //                 </IconButton>
-    //                 <DialogSelect
-    //                     onAddCustomEvent={this.props.onAddCustomEvent}
-    //                     setID={this.props.setID}
-    //                 />
-    //             </Toolbar>
-    //         </Paper>
-    // render() {
     return (
       <div>
         <Paper style={{ overflow: "auto", marginBottom: 8 }}>
@@ -116,20 +84,28 @@ class Calendar extends Component {
               <ChevronRight />
             </IconButton>
             <Typography style={{ flexGrow: 1 }} />
-            <IconButton onClick={this.props.clickToUndo}>
-              <Undo />
-            </IconButton>
+            <Tooltip title="Undo Last Delete">
+              <IconButton onClick={this.props.clickToUndo}>
+                <Undo />
+              </IconButton>
+            </Tooltip>
             <DomPic />
-            <IconButton onClick={this.props.moreInfoF}>
-              <OpenInBrowser />
-            </IconButton>
-            <DialogSelect
-              onAddCustomEvent={this.props.onAddCustomEvent}
-              setID={this.props.setID}
-            />
-            <IconButton onClick={this.props.clear}>
-              <Delete />
-            </IconButton>
+            <Tooltip title="More Info on Selected Classes">
+              <IconButton onClick={this.props.moreInfoF}>
+                <OpenInBrowser />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Add Custom Event">
+              <DialogSelect
+                onAddCustomEvent={this.props.onAddCustomEvent}
+                setID={this.props.setID}
+              />
+            </Tooltip>
+            <Tooltip title="Clear All">
+              <IconButton onClick={this.props.clear}>
+                <Delete />
+              </IconButton>
+            </Tooltip>
           </Toolbar>
         </Paper>
         <Paper id="screenshot">

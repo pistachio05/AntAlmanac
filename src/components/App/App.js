@@ -453,13 +453,8 @@ class App extends Component {
         <CssBaseline />
         <AppBar position="static" style={{ marginBottom: 8 }}>
           <Toolbar variant="dense">
-            <img
-              src={logo}
-              ariaLabel="logo"
-              style={{ height: 40, width: 161 }}
-              className="App-logo"
-              alt="logo"
-            />
+            <img src={logo} style={{ height: 40, width: 248 }} />
+
             <Typography
               variant="title"
               id="introID"
@@ -472,7 +467,7 @@ class App extends Component {
 
             <LoadApp act={this.handleChange} save={this.handleSave} /> */}
 
-            <Tooltip title="Info page">
+            <Tooltip title="Info Page">
               <a
                 style={{ color: "white" }}
                 href={"https://the-antalmanac.herokuapp.com/index.html"}
