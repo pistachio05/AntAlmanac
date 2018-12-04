@@ -31,17 +31,14 @@ class GraphRenderPane extends Component {
 
     fetchGraph(quarter, year, code) {
         const url = `https://l5qp88skv9.execute-api.us-west-1.amazonaws.com/dev/${quarter}/${year}/${code}`;
-
-        fetch(url, {signal: this.signal})
-            .then(resp =>
-                resp.text()
-            )
+        console.log(url);
+        fetch(url,{signal: this.signal}).then(resp => resp.text())
             .then(resp => {
                 this.setState({graph: {__html: resp}});
             });
     }
-
     render() {
+        console.log("prooooooooooooooooooooooooops in reeeeeeeeeeeeeeeeeendere",this.props)
         return (
             <div>
                 <table>

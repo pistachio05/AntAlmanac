@@ -4,6 +4,7 @@ import { Tooltip } from "@material-ui/core";
 import querystring from "querystring";
 import { Help } from "@material-ui/icons";
 
+
 import {
   Modal,
   Button,
@@ -74,7 +75,6 @@ class AlmanacGraph extends Component {
 
           return accumulator;
         }, []);
-
         this.setState({ sections: sections });
       });
   }
@@ -94,6 +94,9 @@ class AlmanacGraph extends Component {
   }
 
   render() {
+    console.log(
+      "PPPPPPPPPPPP", this.props,"LEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN",this.state.sections
+    )
     return (
       <Fragment>
         <Typography style={{ flexGrow: 1 }} />
@@ -131,13 +134,15 @@ class AlmanacGraph extends Component {
                 <MenuItem value={"2018 Winter"}>2018 Winter Quarter</MenuItem>
               </Select>
             </FormControl>
-            {this.state.sections.map(section => (
+            { 
+              this.state.sections.map(section => (
               <GraphRenderPane
                 section={section}
                 quarter={this.state.term[5].toLowerCase()}
                 year={this.state.term.substring(2, 4)}
               />
-            ))}
+            ))
+            }
           </Paper>
         </Modal>
       </Fragment>
