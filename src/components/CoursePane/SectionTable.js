@@ -65,10 +65,10 @@ class SectionTable extends Component {
   }
 
   redirectRMP = async name => {
-    //console.log(name);
+    //(name);
     var lastName = name.substring(0, name.indexOf(","));
     var nameP = rmpData[0][name];
-    if (nameP != undefined)
+    if (nameP !== undefined)
       window.open("https://www.ratemyprofessors.com" + nameP);
     else
       window.open(
@@ -98,7 +98,7 @@ class SectionTable extends Component {
     });
   };
   disableTBA = section => {
-    console.log(section.meetings[0] != "TBA", section.meetings[0]);
+    //console.log(section.meetings[0] != "TBA", section.meetings[0]);
     var test = false;
     for (var element of section.meetings[0]) {
       if (element === "TBA") {
@@ -106,7 +106,7 @@ class SectionTable extends Component {
         break;
       }
     }
-    if (!test)
+    if (!test) {
       return (
         <ScheduleAddSelector
           onAddClass={this.props.onAddClass}
@@ -115,7 +115,7 @@ class SectionTable extends Component {
           termName={this.props.termName}
         />
       );
-    else return;
+    } else return;
   };
   render() {
     const sectionInfo = this.props.courseDetails.sections;
@@ -161,11 +161,13 @@ WL: ${section.numOnWaitlist}
 NOR: ${section.numNewOnlyReserved}`}
                 </td>
                 <td>
-                    <a
-                      href="https://www.reg.uci.edu/enrollment/restrict_codes.html"
-                      target="_blank">
-                        {section.restrictions}
-                    </a>
+                  <a
+                    href="https://www.reg.uci.edu/enrollment/restrict_codes.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {section.restrictions}
+                  </a>
                 </td>
                 <td className={section.status}>{section.status}</td>
               </tr>

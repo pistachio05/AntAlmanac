@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import { IconButton, Typography } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 import SectionTable from "./SectionTable";
@@ -30,7 +29,6 @@ class CourseDetailPane extends Component {
       >
         <div
           style={{
-            overflow: "auto",
             display: "inline-flex"
           }}
         >
@@ -40,14 +38,12 @@ class CourseDetailPane extends Component {
           >
             <ArrowBack />
           </IconButton>
-
           <Typography variant="title" style={{ flexGrow: "2", marginTop: 12 }}>
             {this.props.courseDetails.name[0] +
               " " +
               this.props.courseDetails.name[1]}
             &nbsp;&nbsp;&nbsp;&nbsp;
           </Typography>
-
           <AlmanacGraphWrapped
             term={this.props.term}
             courseDetails={this.props.courseDetails}
@@ -58,7 +54,10 @@ class CourseDetailPane extends Component {
           style={{ margin: 20 }}
           className="course_info"
           dangerouslySetInnerHTML={{
-            __html: this.deptInfo()
+            __html:
+              course_info[this.props.courseDetails.name[0]][
+                this.props.courseDetails.name[1]
+              ]
           }}
         />
 
@@ -66,6 +65,7 @@ class CourseDetailPane extends Component {
           style={{ marginTop: 12 }}
           courseDetails={this.props.courseDetails}
           onAddClass={this.props.onAddClass}
+          termName={this.props.termName}
         />
       </div>
     );

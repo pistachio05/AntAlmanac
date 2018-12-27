@@ -59,7 +59,6 @@ class AlmanacGraph extends Component {
     const url =
       "https://j4j70ejkmg.execute-api.us-west-1.amazonaws.com/latest/api/websoc?" +
       querystring.stringify(params);
-    console.log(url);
 
     fetch(url.toString())
       .then(resp => resp.json())
@@ -110,16 +109,19 @@ class AlmanacGraph extends Component {
               {"Historical Enrollments for " +
                 this.props.courseDetails.name[0] +
                 " " +
-                this.props.courseDetails.name[1] + "   "}
+                this.props.courseDetails.name[1] +
+                "   "}
 
-                <Tooltip title="Need Help with Graphs?">
-                  <a href="https://the-antalmanac.herokuapp.com/index.html#support"
-                     target="_blank"
-                     style={{ color: "black" }}>
-                    <Help fontSize="48px"/>
-                  </a>
-                </Tooltip>
-
+              <Tooltip title="Need Help with Graphs?">
+                <a
+                  href="https://the-antalmanac.herokuapp.com/index.html#support"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "black" }}
+                >
+                  <Help fontSize="48px" />
+                </a>
+              </Tooltip>
             </Typography>
 
             <FormControl fullWidth>
@@ -134,6 +136,7 @@ class AlmanacGraph extends Component {
                 <MenuItem value={"2018 Winter"}>2018 Winter Quarter</MenuItem>
               </Select>
             </FormControl>
+<<<<<<< HEAD
             { 
               this.state.sections.map(section => (
               <GraphRenderPane
@@ -143,6 +146,34 @@ class AlmanacGraph extends Component {
               />
             ))
             }
+=======
+
+            {this.state.sections.length === 0 ? (
+              <div
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Typography variant="h1">
+                  {"This course was not offered in " + this.state.term}
+                </Typography>
+              </div>
+            ) : (
+              <div>
+                {this.state.sections.map(section => (
+                  <GraphRenderPane
+                    section={section}
+                    quarter={this.state.term[5].toLowerCase()}
+                    year={this.state.term.substring(2, 4)}
+                  />
+                ))}
+              </div>
+            )}
+>>>>>>> upstream/master
           </Paper>
         </Modal>
       </Fragment>
