@@ -38,7 +38,8 @@ class AlmanacGraph extends Component {
     this.state = {
       open: false,
       term: "2018 Winter",
-      sections: []
+      sections: [],
+      length: 0
     };
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -74,7 +75,14 @@ class AlmanacGraph extends Component {
 
           return accumulator;
         }, []);
+<<<<<<< HEAD
         this.setState({ sections: sections });
+=======
+
+        this.setState({ length: sections.length }, () => {
+          this.setState({ sections: sections });
+        });
+>>>>>>> safetyBranch
       });
   }
 
@@ -99,7 +107,7 @@ class AlmanacGraph extends Component {
     return (
       <Fragment>
         <Typography style={{ flexGrow: 1 }} />
-        <Button variant="contained" onClick={this.handleOpen}>
+        <Button variant="contained" color="secondary" onClick={this.handleOpen}>
           Past Enrollment
         </Button>
 
@@ -114,7 +122,7 @@ class AlmanacGraph extends Component {
 
               <Tooltip title="Need Help with Graphs?">
                 <a
-                  href="https://the-antalmanac.herokuapp.com/index.html#support"
+                  href="https://www.ics.uci.edu/~rang1/AntAlmanac/index.html#support"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: "black" }}
@@ -164,16 +172,24 @@ class AlmanacGraph extends Component {
               </div>
             ) : (
               <div>
-                {this.state.sections.map(section => (
-                  <GraphRenderPane
-                    section={section}
-                    quarter={this.state.term[5].toLowerCase()}
-                    year={this.state.term.substring(2, 4)}
-                  />
-                ))}
+                {this.state.sections.map(section => {
+                  return (
+                    <GraphRenderPane
+                      section={section}
+                      quarter={this.state.term[5].toLowerCase()}
+                      year={this.state.term.substring(2, 4)}
+                      length={this.state.length}
+                    />
+                  );
+                })}
+                  
               </div>
             )}
+<<<<<<< HEAD
 >>>>>>> upstream/master
+=======
+            
+>>>>>>> safetyBranch
           </Paper>
         </Modal>
       </Fragment>

@@ -9,7 +9,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 export default class FormDialog extends React.Component {
   state = {
-    open: false
+    open: false,
+    name: null
   };
 
   handleClickOpen = () => {
@@ -21,12 +22,44 @@ export default class FormDialog extends React.Component {
   };
 
   handleCloseYes = () => {
-    this.setState({ open: false });
-    this.props.save();
+    this.setState({ open: false }, () => {
+      this.props.handleSave(this.state.name);
+    });
   };
 
   loginClicked = () => {
     this.setState({ open: false });
+  };
+
+  componentDidMount() {
+    if (typeof Storage !== "undefined") {
+      var user = window.localStorage.getItem("name");
+      if (user !== null) {
+        this.setState({ name: user });
+      }
+    }
+    document.addEventListener("keydown", this.enterEvent, false);
+  }
+  componentWillUnmount() {
+    document.addEventListener("keydown", this.enterEvent, false);
+  }
+  enterEvent = event => {
+    var charCode = event.which ? event.which : event.keyCode;
+    if (
+      (charCode === 13 || charCode === 10) &&
+      document.activeElement.id === "nameSave"
+    ) {
+      event.preventDefault();
+      this.setState({ open: false }, () => {
+        this.props.handleSave(this.state.name);
+      });
+
+      // this.refs.input.blur();
+      return false;
+    }
+  };
+  setName = event => {
+    this.setState({ name: event.target.value });
   };
 
   render() {
@@ -36,14 +69,11 @@ export default class FormDialog extends React.Component {
           Save
         </Button>
         <Dialog
-          style={{
-            marginBottom: "30%"
-          }}
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">LogIn</DialogTitle>
+          <DialogTitle id="form-dialog-title">Save</DialogTitle>
           <DialogContent>
             <DialogContentText>
               To save to this website, please enter your User ID here.
@@ -51,14 +81,17 @@ export default class FormDialog extends React.Component {
             <TextField
               autoFocus
               margin="dense"
-              id="name"
+              id="nameSave"
               label="User ID"
               type="text"
               fullWidth
               placeholder="Enter here"
+            defaultValue={this.state.name}
               // call the parent function handle change
-              onChange={e => this.props.act(e.target.value)}
+              onChange={this.setName}
             />
+         
+            
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">

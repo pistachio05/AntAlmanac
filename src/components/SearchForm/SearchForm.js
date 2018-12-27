@@ -20,15 +20,21 @@ class SearchForm extends Component {
   componentWillUnmount() {
     document.addEventListener("keydown", this.enterEvent, false);
   }
+
   enterEvent = event => {
     var charCode = event.which ? event.which : event.keyCode;
-    if (charCode === 13 || charCode == 10) {
+    if (
+      (charCode === 13 || charCode === 10) &&
+      document.activeElement.id === "downshift-0-input"
+    ) {
       this.props.updateFormData(this.state);
       event.preventDefault();
 
+      // this.refs.input.blur();
       return false;
     }
   };
+  
   shouldComponentUpdate(nextProps, nextState, nextContext) {
     return this.state !== nextState;
   }
@@ -48,6 +54,7 @@ class SearchForm extends Component {
   render() {
     return (
       <Grid
+      id ="search"
         container
         item
         alignItems="center"

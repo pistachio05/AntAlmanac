@@ -9,7 +9,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 export default class FormDialog extends React.Component {
   state = {
-    open: false
+    open: false,
+    name: null
   };
 
   handleClickOpen = () => {
@@ -21,14 +22,39 @@ export default class FormDialog extends React.Component {
   };
 
   handleCloseYes = () => {
-    this.setState({ open: false });
-    this.props.load();
+    this.setState({ open: false }, () => {
+      this.props.handleLoad(this.state.name);
+    });
   };
 
   loginClicked = () => {
     this.setState({ open: false });
   };
 
+  componentDidMount() {
+    document.addEventListener("keydown", this.enterEvent, false);
+  }
+  componentWillUnmount() {
+    document.addEventListener("keydown", this.enterEvent, false);
+  }
+  enterEvent = event => {
+    var charCode = event.which ? event.which : event.keyCode;
+    if (
+      (charCode === 13 || charCode === 10) &&
+      document.activeElement.id === "name"
+    ) {
+      event.preventDefault();
+      this.setState({ open: false }, () => {
+        this.props.handleLoad(this.state.name);
+      });
+
+      // this.refs.input.blur();
+      return false;
+    }
+  };
+  setName = event => {
+    this.setState({ name: event.target.value });
+  };
   render() {
     return (
       <div>
@@ -36,14 +62,15 @@ export default class FormDialog extends React.Component {
           Load
         </Button>
         <Dialog
-          style={{
-            marginBottom: "30%"
-          }}
+          //    classes={{
+          //   root: classes.dialog,
+          //   paper: classes.paper
+          // }}
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">LogIn</DialogTitle>
+          <DialogTitle id="form-dialog-title">Load</DialogTitle>
           <DialogContent>
             <DialogContentText>
               To load to this website, please enter your User ID here.
@@ -57,9 +84,10 @@ export default class FormDialog extends React.Component {
               fullWidth
               placeholder="Enter here"
               // call the parent function handle change
-              onChange={e => this.props.act(e.target.value)}
+              onChange={this.setName}
             />
           </DialogContent>
+
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
               Cancel

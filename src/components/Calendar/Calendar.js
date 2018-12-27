@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component,Fragment } from "react";
 import BigCalendar from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
@@ -39,6 +39,10 @@ const CustomEvent = ({ event }) => {
 };
 
 class Calendar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { takePic: false };
+  }
   static eventStyleGetter(event, start, end, isSelected) {
     return {
       style: {
@@ -51,10 +55,11 @@ class Calendar extends Component {
     };
   }
 
+ 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
     return (
-      this.props.classEventsInCalendar !== nextProps.classEventsInCalendar ||
-      this.props.currentScheduleIndex !== nextProps.currentScheduleIndex
+     this.state.takePic!==nextState.takePic ||  this.props.classEventsInCalendar !== nextProps.classEventsInCalendar ||
+      this.props.currentScheduleIndex !== nextProps.currentScheduleIndex||this.props.heighSize !== nextProps.heighSize
     );
   }
   //sorry boss
@@ -68,10 +73,18 @@ class Calendar extends Component {
   //   window.open(url);
   // };
 
+  takePic =async (callback)=>{
+ 
+    this.setState({takePic:true},async ()=>{
+      await callback();
+      this.setState({takePic:false,scroll: new Date()});
+     
+    });
+  }
   render() {
     return (
-      <div>
-        <Paper style={{ overflow: "auto", marginBottom: 8 }}>
+     <Fragment>
+        <Paper id="ok" style={{ overflow: "auto", marginBottom: 8 }}>
           <Toolbar variant="dense" style={{ backgroundColor: "#5191d6" }}>
             <IconButton onClick={() => this.props.onScheduleChange(0)}>
               <ChevronLeft />
@@ -88,7 +101,7 @@ class Calendar extends Component {
                 <Undo />
               </IconButton>
             </Tooltip>
-            <DomPic />
+            <DomPic takePic={this.takePic} />
             <Tooltip title="More Info on Selected Classes">
               <IconButton onClick={this.props.moreInfoF}>
                 <OpenInBrowser />
@@ -105,10 +118,19 @@ class Calendar extends Component {
             </Tooltip>
           </Toolbar>
         </Paper>
-        <Paper id="screenshot">
-          <div>
+        <Paper   >
+           <div id="screenshot"  
+            {...(!this.state.takePic
+                ? {  style: {  height: [this.props.heighSize]+"vh" } }
+                : {})}
+                >
             <BigCalendar
-              style={{ maxHeight: "80vh" }}
+              //  {...(!this.state.takePic
+              //   ? {  style: {  maxHeight: [this.props.heighSize]+"vh" } }
+              //   : {})}
+              
+             
+
               toolbar={false}
               formats={{
                 timeGutterFormat: (date, culture, localizer) =>
@@ -138,7 +160,7 @@ class Calendar extends Component {
             />
           </div>
         </Paper>
-      </div>
+        </Fragment>
     );
   }
 }
