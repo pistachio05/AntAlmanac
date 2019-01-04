@@ -41,33 +41,6 @@ class GraphRenderPane extends Component {
     }
   }
 
-<<<<<<< HEAD
-    fetchGraph(quarter, year, code) {
-        const url = `https://l5qp88skv9.execute-api.us-west-1.amazonaws.com/dev/${quarter}/${year}/${code}`;
-        console.log(url);
-        fetch(url,{signal: this.signal}).then(resp => resp.text())
-            .then(resp => {
-                this.setState({graph: {__html: resp}});
-            });
-    }
-    render() {
-        console.log("prooooooooooooooooooooooooops in reeeeeeeeeeeeeeeeeendere",this.props)
-        return (
-            <div>
-                <table>
-                    <tbody>
-                    <tr>
-                        <th>Type</th>
-                        <th>Instructors</th>
-                        <th>Times</th>
-                        <th>Places</th>
-                        <th>Max Cap</th>
-                    </tr>
-                    <tr>
-                        <td className={this.props.classes.multiline}>
-                            {
-                                `${this.props.section.classType}
-=======
   handleOpen = () => {
     this.setState({ open: !this.state.open }, () => {
       if (this.state.open && this.state.graph === null)
@@ -104,7 +77,6 @@ class GraphRenderPane extends Component {
             <tr>
               <td className={this.props.classes.multiline}>
                 {`${this.props.section.classType}
->>>>>>> safetyBranch
 Section: ${this.props.section.sectionCode}
 Units: ${this.props.section.units}`}
               </td>

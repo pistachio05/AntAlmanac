@@ -10,7 +10,6 @@ import {
   Tooltip
 } from "@material-ui/core";
 
-import MessengerCustomerChat from "react-messenger-customer-chat";
 import SearchForm from "../SearchForm/SearchForm";
 import CoursePane from "../CoursePane/CoursePane";
 import Calendar from "../Calendar/Calendar";
@@ -372,13 +371,7 @@ class App extends Component {
     console.log("%cDonate "+"%cPlease!!!","color:green","color:red");
     return (
       <Fragment>
-        <div>
-          
-          <MessengerCustomerChat
-            pageId="2286387408050026"
-            appId="343457496213889"
-          />
-        </div>
+       
         <CssBaseline />
         <AppBar id="fox" position="static" style={{ marginBottom: 8 }}>
           <Toolbar variant="dense">
