@@ -56,12 +56,13 @@ class Calendar extends Component {
   }
 
  
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return (
-     this.state.takePic!==nextState.takePic ||  this.props.classEventsInCalendar !== nextProps.classEventsInCalendar ||
-      this.props.currentScheduleIndex !== nextProps.currentScheduleIndex||this.props.heighSize !== nextProps.heighSize
-    );
-  }
+  // shouldComponentUpdate(nextProps, nextState, nextContext) {
+  //   return (
+  //    this.state.takePic!==nextState.takePic ||  this.props.classEventsInCalendar !== nextProps.classEventsInCalendar ||
+  //     this.props.currentScheduleIndex !== nextProps.currentScheduleIndex||this.props.heighSize !== nextProps.heighSize
+  //   );
+  // }
+  
   //sorry boss
   // moreInfoURL = events => {
   //   let url =

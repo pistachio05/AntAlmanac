@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from "react";
-import {  IconButton, Menu, MenuItem} from "@material-ui/core";
+import {  IconButton, Menu, MenuItem,Divider} from "@material-ui/core";
 import rmpData from "../CoursePane/RMP.json";
 import AlmanacGraphWrapped from "../AlmanacGraph/AlmanacGraph";
 import POPOVER from "../CoursePane/PopOver";
 import { ArrowBack } from "@material-ui/icons";
 import Notification from '../Notification'
-
+import ColorPicker from './colorPicker'
 //import Button from "@material-ui/core/Button";
 class ScheduleAddSelector extends Component {
   constructor(props) {
@@ -15,13 +15,6 @@ class ScheduleAddSelector extends Component {
 
   handleClick = event => {
     this.setState({ anchor: event.currentTarget });
-    // this.props.onAddClass(
-    //   this.props.section,
-    //   this.props.courseDetails.name,
-    //   0,
-
-    //   this.props.termName
-    // );
   };
 
   handleClose = scheduleNumber => {
@@ -97,13 +90,15 @@ class ScheduleAddSelector extends Component {
     var section = this.props.section;
     return (
       <Fragment>
+        
         <tr
           {...(!this.disableTBA(section)
             ? { onClick: this.handleClick, style: { cursor: "pointer" } }
             : {})}
         >
+        <ColorPicker  classCode ={section.classCode} term={this.props.termName} colorChange={this.props.colorChange} color={this.props.color}/>
           {/* <td className="no_border">{this.disableTBA(section)}</td> */}
-
+          {/* <td bgcolor={this.props.color}><ColorPicker toogleColor= {this.toogleColor}handleClose={this.handleClose} color={this.props.color}/> </td> */}
           <td>{section.classCode}</td>
           <td className="multiline">
             {`${section.classType}
@@ -173,50 +168,6 @@ class showE extends Component {
     this.state = { url: [] };
   }
 
-  redirectRMP = async name => {
-    //console.log(name);
-    var lastName = name.substring(0, name.indexOf(","));
-    var nameP = rmpData[0][name];
-    if (nameP !== undefined)
-      window.open("https://www.ratemyprofessors.com" + nameP);
-    else
-      window.open(
-        `https://www.ratemyprofessors.com/search.jsp?queryBy=teacherName&schoolName=university+of+california+irvine&queryoption=HEADER&query=${lastName}&facetSearch=true`
-      );
-  };
-
-  linkRMP = name => {
-    const rmpStyle = {
-      textDecoration: "underline",
-      color: "#0645AD",
-      cursor: "pointer"
-    };
-    return name.map(item => {
-      if (item !== "STAFF") {
-        return (
-          <div
-            style={rmpStyle}
-            onClick={() => {
-              this.redirectRMP(item);
-            }}
-          >
-            {item}
-          </div>
-        );
-      } else return item;
-    });
-  };
-
-  statusforFindingSpot = (section,classCode,name) => {
-    if(section === 'FULL')
-    return <Notification  full={section} code={classCode} name={name}/>
-    else
-    return section;
- };
-
-
-
-
   render() {
     var schedules =[];
     const events = this.props.events;
@@ -240,14 +191,14 @@ class showE extends Component {
          {
            newArr[i].push({
              name : event.name,
-             section :[event.section],
+             section :[{sec:event.section,color:event.color}],
              courseID:event.courseID,
              courseTerm :event.courseTerm
            }
            );
          }
          else
-             newArr[i][foundIndex].section.push(event.section);
+             newArr[i][foundIndex].section.push({sec:event.section,color:event.color});
       }
       i++;
     }
@@ -258,8 +209,8 @@ class showE extends Component {
           <ArrowBack />
         </IconButton>
         {newArr.map((schedule,index) =>{
-     return (<div> {schedule.length>0 ?( <h2>
-     Schedule {index + 1}</h2>):null}{schedule.map(event =>{
+     return (<div> {schedule.length>0 ?(<div> <h2>
+     Schedule {index + 1}</h2>{schedule.map(event =>{
        return ( <div>
         {/* <strong>
           {event.name[0] + " " + event.name[1] + " " + event.name[2]}
@@ -285,9 +236,11 @@ class showE extends Component {
         Final: {event.section.finalExam}
       </Typography>):null} */}
               
-              <table>
+              <table >
                 <thead>
                   <tr>
+                  {/* <th className="no_border">{}</th> */}
+                  <th>Color</th>
                     <th>Code</th>
                     <th>Type</th>
                     <th>Instructor</th>
@@ -298,17 +251,19 @@ class showE extends Component {
                     <th>Status</th>
                   </tr>
                 </thead>
-                <tbody>{event.section.map(section=>
+                <tbody >{event.section.map(section=>
         {return (
           <ScheduleAddSelector
                   onAddClass={this.props.onAddClass}
-                  section={section}
+                  section={section.sec}
+                  color ={section.color}
                   name={ event.name}
                   termName={ event.courseTerm}
+                  colorChange={this.props.colorChange}
                 />
 
         );})} </tbody></table></div>)
-      })}</div>);    
+      })}<div style={{marginTop: "10px",height:"10px",backgroundColor:"#3f51b5"}}/></div>):null}</div>);    
    })}
         {/* {this.showEvent(this.props.events)} */}
       </Fragment>

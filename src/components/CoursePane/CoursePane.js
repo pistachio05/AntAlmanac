@@ -26,7 +26,6 @@ class CoursePane extends Component {
   static flatten(data) {
     return data.reduce((accumulator, school) => {
       accumulator.push(school);
-
       school.departments.forEach(dept => {
         accumulator.push(dept);
 
@@ -41,7 +40,6 @@ class CoursePane extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { dept, term, ge } = this.props.formData;
-
     if (prevProps.formData !== this.props.formData) {
       this.setState({ loading: 1 });
       const params = { department: dept, term: term, GE: ge };

@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from "react";
-
 import {  Menu, MenuItem } from "@material-ui/core";
 import rmpData from "./RMP.json";
 import AlmanacGraphWrapped from "../AlmanacGraph/AlmanacGraph";
 import POPOVER from "./PopOver";
 import Notification from '../Notification'
+import querystring from "querystring";
 
 class ScheduleAddSelector extends Component {
   constructor(props) {
@@ -160,13 +160,55 @@ NOR: ${section.numNewOnlyReserved}`}
 }
 
 class MiniSectionTable extends Component {
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    return this.props.courseDetails !== nextProps.courseDetails;
+  constructor(props)
+{
+  super(props);
+  this.state={  sectionInfo : this.props.courseDetails.sections};
+
+}
+
+// shouldComponentUpdate(nextProps, nextState, nextContext) {
+
+//   return this.props.courseDetails !== nextProps.courseDetails || this.State.sectionInfo !== nextState.sectionInfo;
+// }
+  componentDidMount = async () => {
+    if(this.props.deptName ===null)
+    {
+      const params = {
+        department: this.props.courseDetails.name[0],
+        term: this.props.termName,
+        courseTitle: this.props.courseDetails.name[2],
+        courseNum: this.props.courseDetails.name[1]
+      };
+  
+      const url =
+        "https://j4j70ejkmg.execute-api.us-west-1.amazonaws.com/latest/api/websoc?" +
+        querystring.stringify(params);
+  
+     await  fetch(url.toString())
+        .then(resp => resp.json())
+        .then(json => {
+          const sections = json.reduce((accumulator, school) => {
+            school.departments.forEach(dept => {
+              dept.courses.forEach(course => {
+                course.sections.forEach(section => {
+                 accumulator.push(section);
+                });
+              });
+            });
+  
+            return accumulator;
+          }, []);
+  
+          this.setState({ sectionInfo: sections });
+        });
+    }
   }
 
 
+
+
   render() {
-    const sectionInfo = this.props.courseDetails.sections;
 
     return (
       <Fragment>
@@ -185,6 +227,7 @@ class MiniSectionTable extends Component {
           <AlmanacGraphWrapped
             term={this.props.term}
             courseDetails={this.props.courseDetails}
+            deptName = {this.props.deptName}
           />
         </div>
         <table>
@@ -203,7 +246,7 @@ class MiniSectionTable extends Component {
             </tr>
           </thead>
           <tbody>
-            {sectionInfo.map(section => {
+            {this.state.sectionInfo.map(section => {
               return (
                 <ScheduleAddSelector
                   onAddClass={this.props.onAddClass}
@@ -221,3 +264,7 @@ class MiniSectionTable extends Component {
 }
 
 export default MiniSectionTable;
+
+
+
+ 

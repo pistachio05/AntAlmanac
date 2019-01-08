@@ -256,6 +256,7 @@ export function getCustomDate(event, id) {
   return obj;
 }
 
+
 export function helpDelete(
   courseID,
   courseTerm,
@@ -308,6 +309,29 @@ export function helpDelete(
   }
   return backup;
 }
+
+export function helpChangeColor(term,code,color,array)
+{
+  for(var item of array)
+  {
+    if(item.customize === false && item.courseID === code && item.courseTerm === term )
+    {item.color = color.hex;
+      console.log("foundIndex",code,color);
+    }
+  }
+}
+
+function helpColor(array,code,term,color)
+{
+  for(var item of array)
+  {
+    if(item.customize === false && item.courseID === code && item.courseTerm === term )
+    {item.color = color;
+      console.log("foundIndex",code,color);
+    }
+  }
+}
+
 export function helpAdd(arrayE, section, name, scheduleNumber, termName) {
   var allowToAdd = false;
   var foundIndex = arrayE.findIndex(function(element) {

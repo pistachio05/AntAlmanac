@@ -104,6 +104,7 @@ class CourseRenderPane extends Component {
             courseDetails={SOCObject}
             onAddClass={this.props.onAddClass}
             termName={this.props.termName}
+            deptName ={this.props.deptName}
           />
         </Grid>
       );
