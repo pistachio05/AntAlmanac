@@ -5,6 +5,7 @@ import AlmanacGraphWrapped from "../AlmanacGraph/AlmanacGraph";
 import POPOVER from "./PopOver";
 import Notification from '../Notification'
 import querystring from "querystring";
+import RstrPopover from "./RstrPopover"
 
 class ScheduleAddSelector extends Component {
   constructor(props) {
@@ -84,7 +85,7 @@ class ScheduleAddSelector extends Component {
     return test;
   };
 
-  
+
   statusforFindingSpot = (section,classCode) => {
     if(section === 'FULL')
     return <Notification  full={section} code={classCode} name={this.props.courseDetails.name}/>
@@ -125,13 +126,9 @@ WL: ${section.numOnWaitlist}
 NOR: ${section.numNewOnlyReserved}`}
           </td>
           <td>
-            <a
-              href="https://www.reg.uci.edu/enrollment/restrict_codes.html"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {section.restrictions}
-            </a>
+            <RstrPopover
+              restrictions = {section.restrictions}
+            />
           </td>
           <td className={section.status}>{this.statusforFindingSpot(section.status,section.classCode)}</td>
         </tr>
@@ -180,11 +177,11 @@ class MiniSectionTable extends Component {
         courseTitle: this.props.courseDetails.name[2],
         courseNum: this.props.courseDetails.name[1]
       };
-  
+
       const url =
         "https://j4j70ejkmg.execute-api.us-west-1.amazonaws.com/latest/api/websoc?" +
         querystring.stringify(params);
-  
+
      await  fetch(url.toString())
         .then(resp => resp.json())
         .then(json => {
@@ -196,10 +193,10 @@ class MiniSectionTable extends Component {
                 });
               });
             });
-  
+
             return accumulator;
           }, []);
-  
+
           this.setState({ sectionInfo: sections });
         });
     }
@@ -264,7 +261,3 @@ class MiniSectionTable extends Component {
 }
 
 export default MiniSectionTable;
-
-
-
- 
