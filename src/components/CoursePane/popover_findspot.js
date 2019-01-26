@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Popover from '@material-ui/core/Popover';
 import Input from '@material-ui/core/Input';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -83,7 +84,6 @@ class SPopover extends React.Component {
     const fb = this.state.userFB;
     const name = this.props.name[1] + " " + this.props.name[2]
 
-
     let url = "https://mediaont.herokuapp.com/facebook"
 
     url = url + code +"/"+ name + "/" + fb;
@@ -122,7 +122,7 @@ class SPopover extends React.Component {
          {this.props.full}
         </Button>
         <Popover
-          id="simple-popper"
+          id="paul-revere"
           open={open}
           anchorEl={anchorEl}
           onClose={this.handleClose}
@@ -138,11 +138,12 @@ class SPopover extends React.Component {
             horizontal: 'right',
           }}
         >
-        <Typography className={classes.typography}>Get notified when section is no longer full!</Typography>
+        <Typography variant="title" className={classes.typography}>Get notified when space opens!</Typography>
 
         <div className={classes.container}>
-
-
+          <typography variant='h2' className={classes.typography} style={{ marginLeft: 30 }}>
+            Email:
+          </typography>
           <Input
            style={{ margin: 10 }}
             onChange={this.inputChange}
@@ -164,6 +165,9 @@ class SPopover extends React.Component {
         </div>
 
         <div className={classes.container}>
+          <typography variant='h2' className={classes.typography} style={{ marginLeft: 30, marginBottom: 10 }}>
+            FB ID:
+          </typography>
           <Input
            style={{ margin: 10 }}
             onChange={this.inputChange}
@@ -182,16 +186,15 @@ class SPopover extends React.Component {
             Add</Button>
         </div>
 
-        <ExpansionPanel>
+        <ExpansionPanel style = {{width : 450}}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>**Why? What Facebook ID?</Typography>
+            <Typography className={classes.heading}>**Facebook ID? What? Why?</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography>
-              Sorry fam, but you're not unique. That's why getting your name won't help me find you on FB.
-              Instead, please enter the unique serial code with which FB has objectified you. Thanks!
-              Don't know what it is? <a href="https://findmyfbid.com" target="_blank">Find it here; no login requried.</a>
-              If this is your first time, please check Settings >> People >> Message Requests >> filtered requests in the Messenger App for a confirmation message. And then you're all set!
+              <p>Sorry fam, but you're not unique. That's why getting your name won't help me find you on FB. Instead, please enter the unique serial code with which FB has objectified you. Thanks!</p>
+              <p>Don't know what it is? <a href="https://findmyfbid.com" target="_blank">Find it here; no login requried</a>.</p>
+              <p>First time? Please check Settings >> People >> Message Requests >> filtered requests in the Messenger App for a confirmation message. Reply to it and you're all set!</p>
             </Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
