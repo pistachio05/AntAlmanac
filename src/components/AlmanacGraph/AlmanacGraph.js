@@ -116,7 +116,7 @@ class AlmanacGraph extends Component {
                   href="https://www.ics.uci.edu/~rang1/AntAlmanac/index.html#support"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ color: "black" }}
+                  style={{ color: "red" }}
                 >
                   <Help fontSize="48px" />
                 </a>
@@ -162,10 +162,10 @@ class AlmanacGraph extends Component {
                     />
                   );
                 })}
-                  
+
               </div>
             )}
-            
+
           </Paper>
         </Modal>
       </Fragment>

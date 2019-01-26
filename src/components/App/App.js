@@ -27,7 +27,8 @@ import {
   saveUserDB,
   getCustomDate,
   helpDelete,
-  helpAdd
+  helpAdd,
+  helpChangeColor
 } from "./FetchHelper";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 
@@ -121,6 +122,8 @@ class App extends Component {
   };
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
   handleSave = async name => {
     if (
@@ -366,7 +369,32 @@ class App extends Component {
     });
   };
 
- // console.log("%cDonate "+"%cPlease!!!","color:green","color:red");
+ ///////////////////////////////////////////////////////////
+ colorChange =(term,code,color)=>
+ {
+   var S0= this.state.schedule0Events;
+   var S1= this.state.schedule1Events;
+   var S2= this.state.schedule2Events;
+   var S3= this.state.schedule3Events;
+    var data = this.state.coursesEvents;
+
+    var foundIndex = data.findIndex(function(element) {
+      return (
+         element.courseID === code && element.courseTerm === term
+      );
+    });
+    data[foundIndex].color = color.hex;
+    helpChangeColor(term,code,color,S0);
+    helpChangeColor(term,code,color,S1);
+    helpChangeColor(term,code,color,S2);
+    helpChangeColor(term,code,color,S3);
+
+    console.log("s00000",S0);
+
+    this.setState({coursesEvents:data, schedule0Events:S0,
+      schedule1Events:S1,
+      schedule2Events:S2,schedule3Events:S3});
+ }
   render() {
    
     return (
@@ -467,6 +495,7 @@ class App extends Component {
                   events={this.state.coursesEvents}
                   onAddClass={this.handleAddClass}
                   moreInfoF={this.moreInfoF}
+                  colorChange={this.colorChange}
                 />
               ) : (
                 <CoursePane
