@@ -3,8 +3,6 @@ import { withStyles } from "@material-ui/core/styles";
 import { Tooltip } from "@material-ui/core";
 import querystring from "querystring";
 import { Help } from "@material-ui/icons";
-import Graph from './rechart'
-
 
 import {
   Modal,
@@ -34,32 +32,20 @@ const styles = theme => ({
 });
 
 class AlmanacGraph extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+  
+    state = {
       open: false,
       term: "2018 Winter",
       sections: [],
-      length: 0,
-      data:[
-          {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-          {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-          {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-          {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-          {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-          {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-          {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
-      ]
+      length: 0
     };
-    this.handleOpen = this.handleOpen.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.fetchCourseData = this.fetchCourseData.bind(this);
-    this.handleChange = this.handleChange.bind(this);
 
-    this.fetchCourseData();
-  }
+   componentDidMount(){
+     this.fetchCourseData()
+   
+    }
 
-  fetchCourseData() {
+  fetchCourseData = () => {
     const params = {
       department: this.props.courseDetails.name[0],
       term: this.state.term,
@@ -92,24 +78,23 @@ class AlmanacGraph extends Component {
       });
   }
 
-  handleChange(event) {
+  handleChange = (event) =>{
     this.setState({ [event.target.name]: event.target.value }, () =>
       this.fetchCourseData()
+    
     );
   }
 
-  handleOpen() {
+  handleOpen = () => {
     this.setState({ open: true });
   }
 
-  handleClose() {
+  handleClose = () => {
     this.setState({ open: false });
   }
 
   render() {
-    console.log(
-      "PPPPPPPPPPPP", this.props,"LEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN",this.state.sections
-    )
+   
     return (
       <Fragment>
         <Typography style={{ flexGrow: 1 }} />
@@ -151,14 +136,41 @@ class AlmanacGraph extends Component {
               </Select>
             </FormControl>
 
-            <Graph />
-          
+            {this.state.sections.length === 0 ? (
+              <div
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Typography variant="h1">
+                  {"This course was not offered in " + this.state.term}
+                </Typography>
+              </div>
+            ) : (
+              <div>
+                {this.state.sections.map(section => {
+                  return (
+                    <GraphRenderPane
+                      section={section}
+                      quarter={this.state.term[5].toLowerCase()}
+                      year={this.state.term.substring(2, 4)}
+                      length={this.state.length}
+                    />
+                  );
+                })}
+                  
+              </div>
+            )}
+            
           </Paper>
         </Modal>
       </Fragment>
     );
   }
 }
-
 
 export default withStyles(styles)(AlmanacGraph);

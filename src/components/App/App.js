@@ -366,9 +366,9 @@ class App extends Component {
     });
   };
 
- 
+ // console.log("%cDonate "+"%cPlease!!!","color:green","color:red");
   render() {
-    console.log("%cDonate "+"%cPlease!!!","color:green","color:red");
+   
     return (
       <Fragment>
        
