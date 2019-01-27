@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
-import { SketchPicker } from 'react-color'
+//import { SketchPicker } from 'react-color'
+//<SketchPicker color={this.state.color} onChange={ this.handleChange }/>
 const styles = theme => ({
   typography: {
     margin: theme.spacing.unit * 2,
@@ -72,9 +73,8 @@ class CPicker extends React.Component {
             horizontal: 'center',
           }}
         >
-        <SketchPicker color={this.state.color} 
-   
-         onChange={ this.handleChange }/>        </Popover>
+        
+                </Popover>
      </td>
     );
   }

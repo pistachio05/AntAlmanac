@@ -5,10 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Popover from '@material-ui/core/Popover';
 import Input from '@material-ui/core/Input';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import WhyID from './popover_cutomDiago'; 
 
 const styles = theme => ({
   typography: {
@@ -28,17 +25,19 @@ class SPopover extends React.Component {
     if (!event)  event = window.event;
     event.cancelBubble = true;
     if (event.stopPropagation) event.stopPropagation();
-    var email ="";
+    let userEmail ="";
+    let userFB =""
     if (typeof Storage !== "undefined") {
-         email = window.localStorage.getItem("email");
+      userEmail = window.localStorage.getItem("email");
+      userFB = window.localStorage.getItem("fb");
       }
 
-      this.setState({ anchorEl: event.currentTarget,userEmail: email });
+      this.setState({ anchorEl: event.currentTarget,userEmail,userFB });
 
   };
 
   handleClose = (event) => {
-    if (!event) var event = window.event;
+    if (!event)  event = window.event;
     event.cancelBubble = true;
     if (event.stopPropagation) event.stopPropagation();
     this.setState({
@@ -56,10 +55,8 @@ class SPopover extends React.Component {
 
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if(!re.test(email))
-    this.setState({
-        anchorEl: null,
-      },()=>{
-      this.props.handleSave(-1,email,code)});
+    this.setState({ anchorEl: null,},()=>{
+      this.props.handleSave(-1,`invalid email, ${email} !`)});
     else
     {
         url = url + code +"/"+ name + "/" + email;
@@ -68,7 +65,7 @@ class SPopover extends React.Component {
             anchorEl: null,
           },()=>{
             fetch(url)
-            this.props.handleSave(1,email,code);
+            this.props.handleSave(1,`${email} added to the notification list for ${name} section: ${code} !!`);
           });
     }
     // url = url + code +"/"+ name + "/" + email;
@@ -79,23 +76,34 @@ class SPopover extends React.Component {
     // alert(email+" added to the notification list for "+ code +" !!!")
   }
 
-  signupFB = () =>{
+  signupFB = async() =>{
     const code = this.props.code;
     const fb = this.state.userFB;
     const name = this.props.name[1] + " " + this.props.name[2]
 
-    let url = "https://mediaont.herokuapp.com/facebook"
+    const url = `https://mediaont.herokuapp.com/facebook/${code}/${name}/${fb}`;
 
-    url = url + code +"/"+ name + "/" + fb;
+
+    this.setState({anchorEl: null});
     window.localStorage.setItem("fb", fb);
-    this.setState({
-        anchorEl: null,
-      },()=>{
-        fetch(url)
-        this.props.handleSave(1,fb,code);
-      });
+      const res =  await fetch(url);
+      const serverResponse = await res.text();
+      
+
+      console.log(serverResponse,res.status)
+      let check = 1
+      if(res.status !== 200)
+       check = -1
+      this.props.handleSave(check, serverResponse);
+    
   }
 
+  inputFacebookChange= (event)=>{
+    if (!event)  event = window.event;
+    event.cancelBubble = true;
+    if (event.stopPropagation) event.stopPropagation();
+    this.setState({userFB: event.target.value})
+  }
 
   inputChange = (event) =>{
     if (!event)  event = window.event;
@@ -110,7 +118,7 @@ class SPopover extends React.Component {
 
     return (
       <React.Fragment>
-
+            
         <Button
           aria-owns={open ? 'simple-popper' : undefined}
           aria-haspopup="true"
@@ -126,7 +134,7 @@ class SPopover extends React.Component {
           open={open}
           anchorEl={anchorEl}
           onClose={this.handleClose}
-          onClick={event=>{if (!event) var event = window.event;
+          onClick={event=>{if (!event)  event = window.event;
             event.cancelBubble = true;
             if (event.stopPropagation) event.stopPropagation();}}
           anchorOrigin={{
@@ -170,7 +178,7 @@ class SPopover extends React.Component {
           </typography>
           <Input
            style={{ margin: 10 }}
-            onChange={this.inputChange}
+            onChange={this.inputFacebookChange}
             placeholder="Facebook ID**"
             className={classes.input}
             defaultValue={this.state.userFB}
@@ -186,7 +194,7 @@ class SPopover extends React.Component {
             Add</Button>
         </div>
 
-        <ExpansionPanel style = {{width : 450}}>
+       { /* <ExpansionPanel style = {{width : 450}}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography className={classes.heading}>**Facebook ID? What? Why?</Typography>
           </ExpansionPanelSummary>
@@ -197,7 +205,8 @@ class SPopover extends React.Component {
               <p>First time? Please check Settings >> People >> Message Requests >> filtered requests in the Messenger App for a confirmation message. Reply to it and you're all set!</p>
             </Typography>
           </ExpansionPanelDetails>
-        </ExpansionPanel>
+          </ExpansionPanel>  */}
+          <WhyID />
 
         </Popover>
       </React.Fragment>
