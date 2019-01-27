@@ -13,9 +13,8 @@ import SnackbarContent from "@material-ui/core/SnackbarContent";
 import WarningIcon from "@material-ui/icons/Warning";
 import { withStyles } from "@material-ui/core/styles";
 import SPopover from './CoursePane/popover_findspot'
-
-
 import { Fragment } from "react";
+
 const variantIcon = {
   success: CheckCircleIcon,
   warning: WarningIcon,
@@ -103,23 +102,15 @@ class CustomizedSnackbars extends React.Component {
 
   
 
-  handleSave =  (check,email,code) => {
+  handleSave =  (check,message) => {
     // var person = prompt("Please enter your unique username");
     if(check ===-1)
     {
-        this.setState({
-            variant: "error",
-            open: true,
-            message: "invalid email, " + email+" !"
-          });
+        this.setState({variant: "error", open: true, message});
     }
     else
     {
-        this.setState({
-            variant: "success",
-            open: true,
-            message: email+" added to the notification list for "+ code +" !!!"
-          });
+        this.setState({variant: "success", open: true, message});
     }
   };
 
