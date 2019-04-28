@@ -16,27 +16,35 @@ class GraphRenderPane extends Component {
 
   componentDidMount() {
      this.fetchclassData()
-      this.fetchGraph(this.props.quarter,this.props.year, this.props.section.classCode);
+      //this.fetchGraph(this.props.quarter,this.props.year, this.props.section.classCode);
   }
 
   componentDidUpdate(prevProps, prevState, prevContext) {
     if (prevProps !== this.props ) {
-      if(this.props.quarter === 'w') this.fetchclassData()
-      else
+
+      /*
       this.setState( () => {
-        this.fetchGraph(this.props.quarter,this.props.year,this.props.section.classCode);
+        //this.fetchGraph(this.props.quarter,this.props.year,this.props.section.classCode);
+      
       });
+      */
+     console.log(prevProps)
+      this.fetchclassData()
     }
   }
 
-
   // will display w18 graphs only
   fetchclassData = async () =>{
-    const res = await fetch(`https://antgraph.herokuapp.com/w18/${this.props.section.classCode}`)
+    const url = `https://almanac-graphs.herokuapp.com/${this.props.quarter+this.props.year}/${this.props.section.classCode}`
+    const res = await fetch(url)
+    console.log(url)
+    if(res.status === 200){
     const data = await res.json()
     this.setState({data})
+    }
   }
 
+/**
   fetchGraph(quarter, year, code) {
     const url = `https://l5qp88skv9.execute-api.us-west-1.amazonaws.com/dev/${quarter}/${year}/${code}`;
 
@@ -44,9 +52,11 @@ class GraphRenderPane extends Component {
         this.setState({ graph: { __html: resp } });
       });
   }
+ */
 
   render() {
     console.log(this.state)
+    console.log(this.props)
     return (
       <div>
         <table>
@@ -82,8 +92,11 @@ class GraphRenderPane extends Component {
           </tbody>
         </table>
         {
-          this.props.quarter ==='w'?(  <Rechart data={this.state.data} />): 
+         /** 
+         this.props.quarter ==='w'?(  <Rechart data={this.state.data} />): 
           (<div style={{ width: "85%" }} dangerouslySetInnerHTML={this.state.graph}/>)
+          */
+         <Rechart rawData={this.state.data} />
         }
       </div>
     );
